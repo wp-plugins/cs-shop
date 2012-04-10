@@ -100,6 +100,33 @@ class Rakuten implements Service
     }
 
     /**
+     * GET 要求ダウンロード処理(WordPress関数利用)
+     * @param string $url 要求先URL
+     * @param int $timeout タイムアウト秒数
+     * @param int $retry 再試行回数
+     * @return string 取得したコンテンツ
+     */
+    private function download($url, $timeout = 10, $retry = 10)
+    {
+        // 10回まで再試行
+        for ($i = 0; $i < $retry; $i++) {
+
+            // ダウンロード実行
+            $response = wp_remote_get($url, array('timeout' => $timeout));
+
+            // ダウンロード結果の判定
+            if (!is_wp_error($response) && $response["response"]["code"] === 200) {
+
+                // 成功時(コンテンツを返却)
+                return $response['body'];
+            }
+        }
+
+        // ダウンロードに失敗した場合
+        return FALSE;
+    }
+
+    /**
      * カテゴリ検索クエリ生成
      * @link http://webservice.rakuten.co.jp/api/genresearch/
      * @param string $parent 対象カテゴリ
@@ -168,7 +195,7 @@ class Rakuten implements Service
         if (empty($parent)) {
             $parent = 0;
         }
-        $strxml = file_get_contents($this->queryCategories($parent));
+        $strxml = $this->download($this->queryCategories($parent));
         $strxml = str_replace("header:Header", "Header", $strxml);
         $strxml = str_replace("genreSearch:GenreSearch", "GenreSearch", $strxml);
         $objxml = simplexml_load_string($strxml);
@@ -189,7 +216,7 @@ class Rakuten implements Service
      */
     public function getItems(&$search)
     {
-        $strxml = file_get_contents($this->queryItems($search));
+        $strxml = $this->download($this->queryItems($search));
         $strxml = str_replace("header:Header", "Header", $strxml);
         $strxml = str_replace("itemSearch:ItemSearch", "ItemSearch", $strxml);
         $objxml = simplexml_load_string($strxml);
