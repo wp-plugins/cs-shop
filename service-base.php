@@ -62,8 +62,8 @@ class ServiceBase implements IService
                 // 成功時(コンテンツを取得)
                 $contents = $response['body'];
 
-                // キャッシュに格納
-                if (!empty($id)) {
+                // キャッシュに格納(コンテンツが空では無い場合)
+                if (!empty($id) && !empty($contents)) {
                     $this->cache->save($contents, $id);
                 }
 
