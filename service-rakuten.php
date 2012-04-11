@@ -1,26 +1,20 @@
 <?php
 /**
- * アフィリエイトサービスクラス(楽天)
+ * アフィリエイトサービス実装クラス(楽天)
  * User: cottonspace
- * Date: 12/04/08
+ * Date: 12/04/11
  */
 
 /**
- * アフィリエイトサービスのインターフェイス
+ * 基底クラス
  */
-require_once "service.php";
+require_once "service-base.php";
 
 /**
  * アフィリエイトサービスの実装クラス
  */
-class Rakuten implements Service
+class Rakuten extends ServiceBase
 {
-    /**
-     * アカウント情報
-     * @var array アフィリエイト登録情報の連想配列
-     */
-    private $account;
-
     /**
      * 商品検索ページ総数
      * @var int 商品検索ページ総数
@@ -61,69 +55,6 @@ class Rakuten implements Service
             }
         }
         return $ret;
-    }
-
-    /**
-     * コンストラクタ
-     * @param array $account アフィリエイト登録情報の連想配列
-     */
-    public function __construct($account)
-    {
-        $this->account = $account;
-    }
-
-    /**
-     * サービス識別名
-     * @return string サービス識別名
-     */
-    public function serviceName()
-    {
-        return "rakuten";
-    }
-
-    /**
-     * 商品検索ソート方法取得
-     * @return array ソート指定の連想配列
-     */
-    public function getSortTypes()
-    {
-        return $this->sortTypes;
-    }
-
-    /**
-     * 商品検索ページ総数
-     * @return int 商品検索ページ総数
-     */
-    public function getPageCount()
-    {
-        return $this->pageCount;
-    }
-
-    /**
-     * GET 要求ダウンロード処理(WordPress関数利用)
-     * @param string $url 要求先URL
-     * @param int $timeout タイムアウト秒数
-     * @param int $retry 再試行回数
-     * @return string 取得したコンテンツ
-     */
-    private function download($url, $timeout = 10, $retry = 10)
-    {
-        // 10回まで再試行
-        for ($i = 0; $i < $retry; $i++) {
-
-            // ダウンロード実行
-            $response = wp_remote_get($url, array('timeout' => $timeout));
-
-            // ダウンロード結果の判定
-            if (!is_wp_error($response) && $response["response"]["code"] === 200) {
-
-                // 成功時(コンテンツを返却)
-                return $response['body'];
-            }
-        }
-
-        // ダウンロードに失敗した場合
-        return FALSE;
     }
 
     /**
@@ -185,6 +116,33 @@ class Rakuten implements Service
     }
 
     /**
+     * サービス識別名
+     * @return string サービス識別名
+     */
+    public function serviceName()
+    {
+        return "rakuten";
+    }
+
+    /**
+     * 商品検索ソート方法取得
+     * @return array ソート指定の連想配列
+     */
+    public function getSortTypes()
+    {
+        return $this->sortTypes;
+    }
+
+    /**
+     * 商品検索ページ総数
+     * @return int 商品検索ページ総数
+     */
+    public function getPageCount()
+    {
+        return $this->pageCount;
+    }
+
+    /**
      * カテゴリ検索
      * @link http://webservice.rakuten.co.jp/api/genresearch/
      * @param string $parent 基底カテゴリ
@@ -195,7 +153,8 @@ class Rakuten implements Service
         if (empty($parent)) {
             $parent = 0;
         }
-        $strxml = $this->download($this->queryCategories($parent));
+        $query = $this->queryCategories($parent);
+        $strxml = $this->download($query, $query);
         $strxml = str_replace("header:Header", "Header", $strxml);
         $strxml = str_replace("genreSearch:GenreSearch", "GenreSearch", $strxml);
         $objxml = simplexml_load_string($strxml);
@@ -216,7 +175,8 @@ class Rakuten implements Service
      */
     public function getItems(&$search)
     {
-        $strxml = $this->download($this->queryItems($search));
+        $query = $this->queryItems($search);
+        $strxml = $this->download($query, $query);
         $strxml = str_replace("header:Header", "Header", $strxml);
         $strxml = str_replace("itemSearch:ItemSearch", "ItemSearch", $strxml);
         $objxml = simplexml_load_string($strxml);

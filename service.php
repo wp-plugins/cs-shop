@@ -2,10 +2,10 @@
 /**
  * アフィリエイトサービスインターフェイス
  * User: cottonspace
- * Date: 12/04/08
+ * Date: 12/04/11
  */
 
-interface Service
+interface IService
 {
     /**
      * コンストラクタ

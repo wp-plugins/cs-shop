@@ -2,7 +2,7 @@
 /**
  * 画面描画用関数ライブラリ
  * User: cottonspace
- * Date: 12/04/08
+ * Date: 12/04/11
  */
 
 /**
@@ -314,7 +314,7 @@ EOF;
 
     // プラグインのシグネチャ表示
     $output .= <<<EOF
-<!-- Begin Powered by CS Shop 0.9.1 -->
+<!-- Begin Powered by CS Shop 0.9.2 -->
 <a href="http://www.csync.net/">
 <img src="{$pluginBaseUrl}/cs-shop.gif" width="80" height="15" title="CS Shop" alt="CS Shop" border="0" style="margin:15px 0px"></a>
 <!-- End Powered by CS Shop -->\n

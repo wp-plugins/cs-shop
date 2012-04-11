@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.1
+Stable tag: 0.9.2
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -33,6 +33,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 
 == Changelog ==
 
+= 0.9.2 =
+* Add Cache feature using Cache_Lite.
+
 = 0.9.1 =
 * Add Timeout and Retry feature for service access.
 
@@ -40,6 +43,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 0.9.2 =
+Reduce the number of queries, and improve response time.
 
 = 0.9.1 =
 If you have problem which the search results is not displayed, which may be resolved.
