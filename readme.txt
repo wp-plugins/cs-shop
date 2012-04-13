@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.3
+Stable tag: 0.9.5
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -17,6 +17,8 @@ Unfortunately, this plugin is only available in Japan.
 
 In the first version only supports the Rakuten affiliate service. However, in future versions, I will also support the other affiliate services.
 
+Amazon was supported in version 0.9.5.
+
 == Installation ==
 
 1. Upload `cs-shop` directory to the `/wp-content/plugins/` directory.
@@ -25,13 +27,20 @@ In the first version only supports the Rakuten affiliate service. However, in fu
 1. Create a new page, Please write a short code `[csshop service="rakuten"]` to that page. (This is the case you select the Rakuten.)
 1. Please visit the page that you created. Categories of the affiliate service that you set should be displayed.
 
-This is the most simple configuration steps. Short code to a variety of attributes can be set.
+This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
 
 == Frequently Asked Questions ==
 
 == Screenshots ==
 
 == Changelog ==
+
+= 0.9.5 =
+* Add support Amazon Product Advertising API.
+
+= 0.9.4 =
+* Fixed bug that failed to download by the execution environment.
+* Fixed a bug does not work on sites that do not have to configure the settings of Permalink.
 
 = 0.9.3 =
 * When the content is empty, Added a logic that does not cache.
@@ -47,6 +56,12 @@ This is the most simple configuration steps. Short code to a variety of attribut
 
 == Upgrade Notice ==
 
+= 0.9.5 =
+Support Amazon service.
+
+= 0.9.4 =
+Fixed lots of bugs.
+
 = 0.9.3 =
 This is a simple fix of source code.
 
@@ -61,10 +76,14 @@ The first release version.
 
 == Shortcode Example ==
 
-To view the results of a search by specifying the keyword 'foo' automatically. (This is the case you select the Rakuten.)
+To view the results of a search by specifying the keyword 'foo' automatically.
 
 `[csshop service="rakuten" action="search" keyword="foo"]`
 
-To view the results of a search by specifying the category 'computers' automatically. (This is the case you select the Rakuten.)
+`[csshop service="amazon" action="search" keyword="foo"]`
+
+To view the results of a search by specifying the specified category automatically.
 
 `[csshop service="rakuten" action="search" category="100026"]`
+
+`[csshop service="amazon" action="search" category="Electronics"]`

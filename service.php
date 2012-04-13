@@ -21,9 +21,10 @@ interface IService
 
     /**
      * 商品検索ソート方法取得
+     * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes();
+    public function getSortTypes($category = "");
 
     /**
      * 商品検索ページ総数

@@ -26,7 +26,6 @@ class Rakuten extends ServiceBase
      * @var array 商品ソート指定の配列
      */
     private $sortTypes = array(
-        "" => "standard",
         "+price" => "+itemPrice",
         "-price" => "-itemPrice",
         "-reviews" => "-reviewCount",
@@ -109,6 +108,8 @@ class Rakuten extends ServiceBase
         }
         if (!empty($search["sort"]) && array_key_exists($search["sort"], $this->sortTypes)) {
             $params["sort"] = $this->sortTypes[$search["sort"]];
+        } else {
+            $params["sort"] = "standard";
         }
         $params["page"] = $search["page"];
         ksort($params);
@@ -126,9 +127,10 @@ class Rakuten extends ServiceBase
 
     /**
      * 商品検索ソート方法取得
+     * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes()
+    public function getSortTypes($category = "")
     {
         return $this->sortTypes;
     }
@@ -153,7 +155,11 @@ class Rakuten extends ServiceBase
         if (empty($parent)) {
             $parent = 0;
         }
+
+        // RESTクエリ情報を取得
         $query = $this->queryCategories($parent);
+
+        // RESTクエリ実行
         $strxml = $this->download($query, $query);
         $strxml = str_replace("header:Header", "Header", $strxml);
         $strxml = str_replace("genreSearch:GenreSearch", "GenreSearch", $strxml);
@@ -175,7 +181,10 @@ class Rakuten extends ServiceBase
      */
     public function getItems(&$search)
     {
+        // RESTクエリ情報を取得
         $query = $this->queryItems($search);
+
+        // RESTクエリ実行
         $strxml = $this->download($query, $query);
         $strxml = str_replace("header:Header", "Header", $strxml);
         $strxml = str_replace("itemSearch:ItemSearch", "ItemSearch", $strxml);

@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: You can easily create a product search page from the affiliate services of Japan.
-Version: 0.9.3
+Version: 0.9.5
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -66,8 +66,23 @@ function csshop_view($atts, $content = null)
             // 楽天アフィリエイト
             require_once 'service-rakuten.php';
             $service = new Rakuten(array(
-                "affiliateId" => get_option("csshop_rakuten_aid"),
-                "developerId" => get_option("csshop_rakuten_did")
+                "affiliateId"
+                => get_option("csshop_rakuten_aid"),
+                "developerId"
+                => get_option("csshop_rakuten_did")
+            ));
+            break;
+        case "amazon":
+
+            // Amazon
+            require_once 'service-amazon.php';
+            $service = new Amazon(array(
+                "AccessKeyId"
+                => get_option("csshop_amazon_access_id"),
+                "SecretAccessKeyId"
+                => get_option("csshop_amazon_secret_id"),
+                "AssociateTag"
+                => get_option("csshop_amazon_assoc")
             ));
             break;
         default:

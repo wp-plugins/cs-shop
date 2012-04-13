@@ -2,7 +2,7 @@
 /**
  * アフィリエイトサービス基底クラス
  * User: cottonspace
- * Date: 12/04/11
+ * Date: 12/04/13
  */
 
 /**
@@ -34,7 +34,7 @@ class ServiceBase implements IService
 
     /**
      * GET 要求ダウンロード処理(WordPress関数利用)
-     * @param string $id キャッシュID(通常は $url と同様だが Amazon 対応で必要)
+     * @param string $id キャッシュID(通常は $url と同様だが時間によって URL が変動する Amazon 対応で必要)
      * @param string $url 要求先URL
      * @param int $timeout タイムアウト秒数
      * @param int $retry 再試行回数
@@ -57,7 +57,7 @@ class ServiceBase implements IService
             $response = wp_remote_get($url, array('timeout' => $timeout));
 
             // ダウンロード結果の判定
-            if (!is_wp_error($response) && $response["response"]["code"] === 200) {
+            if (!is_wp_error($response) && $response["response"]["code"] == 200) {
 
                 // 成功時(コンテンツを取得)
                 $contents = $response['body'];
@@ -116,9 +116,10 @@ class ServiceBase implements IService
 
     /**
      * 商品検索ソート方法取得
+     * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes()
+    public function getSortTypes($category = "")
     {
         return array();
     }

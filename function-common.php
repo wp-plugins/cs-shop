@@ -2,7 +2,7 @@
 /**
  * 共通関数ライブラリ
  * User: cottonspace
- * Date: 12/04/08
+ * Date: 12/04/14
  */
 
 /**
@@ -18,11 +18,16 @@ function i_escape($str)
 /**
  * 出力エスケープ処理(セキュリティ対策)
  * @param string $str 入力文字列
+ * @param bool $newline 改行コードを <br /> 文字に変換
  * @return string 編集文字列
  */
-function o_escape($str)
+function o_escape($str,$newline=false)
 {
-    return htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+    $str = htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
+    if($newline){
+        $str= str_replace(array("\r", "\n"), "<br />", $str);
+    }
+    return $str;
 }
 
 /**
