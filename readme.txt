@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.5
+Stable tag: 0.9.5.1
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -15,9 +15,7 @@ Simply by writing a short code to just one page, shopping malls will be created 
 
 Unfortunately, this plugin is only available in Japan.
 
-In the first version only supports the Rakuten affiliate service. However, in future versions, I will also support the other affiliate services.
-
-Amazon was supported in version 0.9.5.
+[Readme page in Japanese.](http://www.csync.net/wp-plugin/cs-shop/cs-shop-readme/)
 
 == Installation ==
 
@@ -29,11 +27,11 @@ Amazon was supported in version 0.9.5.
 
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
 
-== Frequently Asked Questions ==
-
-== Screenshots ==
-
 == Changelog ==
+
+= 0.9.5.1 =
+* Add display credit of Rakuten service.
+* If there is no product image to view an alternate image.
 
 = 0.9.5 =
 * Add support Amazon Product Advertising API.
@@ -55,6 +53,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 0.9.5.1 =
+If you use the Rakuten, you must version up.
 
 = 0.9.5 =
 Support Amazon service.

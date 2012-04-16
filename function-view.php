@@ -234,11 +234,12 @@ function showItems(&$params, &$items)
             } else {
                 $shopicon = "";
             }
+            $imageurl = empty($item['iurl']) ? WP_PLUGIN_URL . "/cs-shop/no-image.gif" : $item['iurl'];
             $shopname = empty($item['shop']) ? "詳細" : $item['shop'];
             $output .= <<< EOT
 <div class="csshop-item">
 <h3>{$item_escaped['name']}</h3>
-<div class="image"><a href="{$item['aurl']}" target="_blank"><img src="{$item['iurl']}" alt="{$item_escaped['name']}" width="128" /></a></div>
+<div class="image"><a href="{$item['aurl']}" target="_blank"><img src="{$imageurl}" alt="{$item_escaped['name']}" width="128" /></a></div>
 <div class="price">{$item['price']}</div>
 <div class="shop">{$shopicon}<a href="{$item['aurl']}" target="_blank">{$shopname}</a></div>
 <div class="description">{$item_escaped['desc']}</div>
@@ -251,10 +252,11 @@ EOT;
         foreach ($items as $item) {
             $item_escaped["name"] = o_escape(mb_strimwidth($item["name"], 0, 64, "..", "UTF-8"));
             $item_escaped["desc"] = o_escape(mb_strimwidth($item["desc"], 0, 128, "..", "UTF-8"), true);
+            $imageurl = empty($item['iurl']) ? WP_PLUGIN_URL . "/cs-shop/no-image.gif" : $item['iurl'];
             $shopname = empty($item['shop']) ? "詳細" : $item['shop'];
             $output .= <<< EOT
 <h3>{$item_escaped['name']}</h3>
-<a href="{$item['aurl']}" target="_blank"><img src="{$item['iurl']}" width="64" /></a>
+<a href="{$item['aurl']}" target="_blank"><img src="{$imageurl}" width="64" /></a>
 {$item['price']}<br />
 <a href="{$item['aurl']}" target="_blank">{$shopname}</a><br />
 {$item_escaped['desc']}\n
@@ -347,6 +349,13 @@ function showSignature($servicename)
 
     // 使用サービス指定のシグネチャ表示
     switch ($servicename) {
+        case "rakuten":
+            $output .= <<<EOF
+<!-- Rakuten Web Services Attribution Snippet FROM HERE -->
+<a href="http://webservice.rakuten.co.jp/" target="_blank"><img src="http://webservice.rakuten.co.jp/img/credit/200709/credit_4936.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="49" height="36"/></a>
+<!-- Rakuten Web Services Attribution Snippet TO HERE -->\n
+EOF;
+            break;
         case "yahoo":
             $output .= <<<EOF
 <!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
@@ -359,7 +368,7 @@ EOF;
 
     // プラグインのシグネチャ表示
     $output .= <<<EOF
-<!-- Begin Powered by CS Shop 0.9.5 -->
+<!-- Begin Powered by CS Shop 0.9.5.1 -->
 <a href="http://www.csync.net/">
 <img src="{$pluginBaseUrl}/cs-shop.gif" width="80" height="15" title="CS Shop" alt="CS Shop" border="0" style="margin:15px 0px"></a>
 <!-- End Powered by CS Shop -->\n
