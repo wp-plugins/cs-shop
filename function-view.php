@@ -17,6 +17,41 @@ function getCurrentUrl()
 }
 
 /**
+ * レビュー平均点の表示
+ * @param float $score レビュー平均点(0.0～5.0)
+ * @return string 出力コンテンツ
+ */
+function getScoreLevel($score)
+{
+
+    // 出力コンテンツ
+    $output = "";
+
+    // 値が 0 の場合(サービスが対応していない場合を含む)は表示しない
+    if (0 < $score) {
+
+        // 評価マーク個数
+        $score10 = (int)floor($score);
+        $score05 = (0.5 <= ($score - $score10)) ? 1 : 0;
+        $score00 = 5 - $score10 - $score05;
+
+        // 評価マーク画像の表示
+        for ($i = 0; $i < $score10; $i++) {
+            $output .= "<img src=\"" . CS_SHOP_URL . "/score-10.gif\" />";
+        }
+        for ($i = 0; $i < $score05; $i++) {
+            $output .= "<img src=\"" . CS_SHOP_URL . "/score-05.gif\" />";
+        }
+        for ($i = 0; $i < $score00; $i++) {
+            $output .= "<img src=\"" . CS_SHOP_URL . "/score-00.gif\" />";
+        }
+    }
+
+    // コンテンツの返却
+    return $output;
+}
+
+/**
  * 最上位カテゴリ一覧
  * @param object $service サービス情報
  * @return string 出力コンテンツ
@@ -234,14 +269,16 @@ function showItems(&$params, &$items)
             } else {
                 $shopicon = "";
             }
-            $imageurl = empty($item['iurl']) ? WP_PLUGIN_URL . "/cs-shop/no-image.gif" : $item['iurl'];
+            $imageurl = empty($item['iurl']) ? CS_SHOP_URL . "/no-image.gif" : $item['iurl'];
             $shopname = empty($item['shop']) ? "詳細" : $item['shop'];
+            $scorelevel = empty($item['score']) ? "" : getScoreLevel($item['score']) . " 評価 " . $item['score'];
             $output .= <<< EOT
 <div class="csshop-item">
 <h3>{$item_escaped['name']}</h3>
 <div class="image"><a href="{$item['aurl']}" target="_blank"><img src="{$imageurl}" alt="{$item_escaped['name']}" width="128" /></a></div>
 <div class="price">{$item['price']}</div>
 <div class="shop">{$shopicon}<a href="{$item['aurl']}" target="_blank">{$shopname}</a></div>
+<div class="score">{$scorelevel}</div>
 <div class="description">{$item_escaped['desc']}</div>
 </div>\n
 EOT;
@@ -252,13 +289,15 @@ EOT;
         foreach ($items as $item) {
             $item_escaped["name"] = o_escape(mb_strimwidth($item["name"], 0, 64, "..", "UTF-8"));
             $item_escaped["desc"] = o_escape(mb_strimwidth($item["desc"], 0, 128, "..", "UTF-8"), true);
-            $imageurl = empty($item['iurl']) ? WP_PLUGIN_URL . "/cs-shop/no-image.gif" : $item['iurl'];
+            $imageurl = empty($item['iurl']) ? CS_SHOP_URL . "/no-image.gif" : $item['iurl'];
             $shopname = empty($item['shop']) ? "詳細" : $item['shop'];
+            $scorelevel = empty($item['score']) ? "" : "評価 " . $item['score'];
             $output .= <<< EOT
 <h3>{$item_escaped['name']}</h3>
 <a href="{$item['aurl']}" target="_blank"><img src="{$imageurl}" width="64" /></a>
 {$item['price']}<br />
 <a href="{$item['aurl']}" target="_blank">{$shopname}</a><br />
+{$scorelevel}<br />
 {$item_escaped['desc']}\n
 EOT;
         }
@@ -332,50 +371,36 @@ function showPageLinks(&$service, &$params)
 }
 
 /**
- * サービス署名
- * @param $servicename 使用サービス名
+ * サービスクレジット表示
+ * @param object $service サービス情報
  * @return string 出力コンテンツ
  */
-function showSignature($servicename)
+function showServiceCredits(&$service)
 {
     // 出力コンテンツ
     $output = "";
 
-    // シグネチャ開始
-    $output .= "<p>\n";
+    // プラグインのバージョン
+    $version = CS_SHOP_VER;
 
-    // プラグインの基準URL
-    $pluginBaseUrl = WP_PLUGIN_URL . "/cs-shop";
+    // プラグイン用クレジット画像のURL
+    $cregit = CS_SHOP_URL . "/cs-shop.gif";
 
-    // 使用サービス指定のシグネチャ表示
-    switch ($servicename) {
-        case "rakuten":
-            $output .= <<<EOF
-<!-- Rakuten Web Services Attribution Snippet FROM HERE -->
-<a href="http://webservice.rakuten.co.jp/" target="_blank"><img src="http://webservice.rakuten.co.jp/img/credit/200709/credit_4936.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="49" height="36"/></a>
-<!-- Rakuten Web Services Attribution Snippet TO HERE -->\n
-EOF;
-            break;
-        case "yahoo":
-            $output .= <<<EOF
-<!-- Begin Yahoo! JAPAN Web Services Attribution Snippet -->
-<a href="http://developer.yahoo.co.jp/about">
-<img src="http://i.yimg.jp/images/yjdn/yjdn_attbtn2_105_17.gif" width="105" height="17" title="Webサービス by Yahoo! JAPAN" alt="Webサービス by Yahoo! JAPAN" border="0" style="margin:15px 15px 15px 15px"></a>
-<!-- End Yahoo! JAPAN Web Services Attribution Snippet -->\n
-EOF;
-            break;
-    }
+    // クレジット開始
+    $output .= "<div class=\"csshop-service-credits\">\n";
 
-    // プラグインのシグネチャ表示
+    // 使用サービスのクレジット表示
+    $output .= $service->serviceCredit();
+
+    // CS Shop プラグインのクレジット表示
     $output .= <<<EOF
-<!-- Begin Powered by CS Shop 0.9.5.1 -->
-<a href="http://www.csync.net/">
-<img src="{$pluginBaseUrl}/cs-shop.gif" width="80" height="15" title="CS Shop" alt="CS Shop" border="0" style="margin:15px 0px"></a>
+<!-- Begin Powered by CS Shop {$version} -->
+<a href="http://www.csync.net/"><img src="{$cregit}" width="80" height="15" title="CS Shop" alt="CS Shop" border="0" /></a>
 <!-- End Powered by CS Shop -->\n
 EOF;
 
-    // シグネチャ終了
-    $output .= "</p>\n";
+    // クレジット終了
+    $output .= "</div>\n";
 
     // コンテンツの返却
     return $output;

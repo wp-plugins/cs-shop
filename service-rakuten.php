@@ -126,6 +126,20 @@ class Rakuten extends ServiceBase
     }
 
     /**
+     * サービスクレジット表記
+     * @return string サービスクレジット表記
+     */
+    public function serviceCredit()
+    {
+        $credit = <<<EOF
+<!-- Rakuten Web Services Attribution Snippet FROM HERE -->
+<a href="http://webservice.rakuten.co.jp/" target="_blank"><img src="http://webservice.rakuten.co.jp/img/credit/200709/credit_4936.gif" border="0" alt="楽天ウェブサービスセンター" title="楽天ウェブサービスセンター" width="49" height="36"/></a>
+<!-- Rakuten Web Services Attribution Snippet TO HERE -->\n
+EOF;
+        return $credit;
+    }
+
+    /**
      * 商品検索ソート方法取得
      * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
@@ -198,6 +212,7 @@ class Rakuten extends ServiceBase
                         "price" => $this->formatPrice((string)$node->itemPrice, (string)$node->taxFlag, (string)$node->postageFlag),
                         "desc" => (string)$node->itemCaption,
                         "shop" => (string)$node->shopName,
+                        "score"=> floatval((string)$node->reviewAverage),
                         "aurl" => (string)$node->affiliateUrl,
                         "iurl" => empty($search["mobile"]) ? (string)$node->mediumImageUrl : (string)$node->smallImageUrl,
                         "surl" => (string)$node->shopUrl)

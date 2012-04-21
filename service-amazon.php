@@ -634,6 +634,7 @@ class Amazon extends ServiceBase
                             )
                         ),
                         "shop" => "Amazon.co.jp",
+                        "score" => floatval((string)$node->CustomerReviews->AverageRating), // 現在は AverageRating は存在しない
                         "aurl" => (string)$node->DetailPageURL,
                         "iurl" => empty($search["mobile"]) ? (string)$node->MediumImage->URL : (string)$node->SmallImage->URL,
                         "surl" => "http://www.amazon.co.jp/"

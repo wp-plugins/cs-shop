@@ -20,6 +20,12 @@ interface IService
     public function serviceName();
 
     /**
+     * サービスクレジット表記
+     * @return string サービスクレジット表記
+     */
+    public function serviceCredit();
+
+    /**
      * 商品検索ソート方法取得
      * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列

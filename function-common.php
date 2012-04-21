@@ -21,11 +21,11 @@ function i_escape($str)
  * @param bool $newline 改行コードを <br /> 文字に変換
  * @return string 編集文字列
  */
-function o_escape($str,$newline=false)
+function o_escape($str, $newline = false)
 {
     $str = htmlspecialchars($str, ENT_QUOTES, 'UTF-8');
-    if($newline){
-        $str= str_replace(array("\r", "\n"), "<br />", $str);
+    if ($newline) {
+        $str = str_replace(array("\r", "\n"), "<br />", $str);
     }
     return $str;
 }

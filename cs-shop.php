@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: You can easily create a product search page from the affiliate services of Japan.
-Version: 0.9.5.1
+Version: 0.9.5.2
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -25,6 +25,16 @@ License: GPL2
 */
 ?>
 <?php
+/**
+ * プラグインのバージョン
+ */
+define('CS_SHOP_VER', '0.9.5.2');
+
+/**
+ * プラグインのURLを CS_SHOP_URL 定数に設定(末尾に / は付かない)
+ */
+define('CS_SHOP_URL', parse_url(WP_PLUGIN_URL, PHP_URL_PATH) . "/cs-shop");
+
 /**
  * 表示用ショートコード [csshop] 実行処理
  * @param array $atts ショートコードで指定された属性情報
@@ -141,8 +151,8 @@ function csshop_view($atts, $content = null)
             break;
     }
 
-    // サービス署名表示
-    $output .= showSignature($service->serviceName());
+    // サービスクレジット表示
+    $output .= showServiceCredits($service);
 
     // コンテンツの返却
     return $output;
@@ -153,12 +163,12 @@ function csshop_view($atts, $content = null)
  */
 function csshop_css()
 {
-    // プラグインの基準URL
-    $pluginBaseUrl = WP_PLUGIN_URL . "/cs-shop";
+    // CSSファイルのURL
+    $cssurl = CS_SHOP_URL . "/cs-shop.css";
 
     // スタイルシートリンクの表示
     echo  <<<EOF
-<link rel="stylesheet" href="{$pluginBaseUrl}/cs-shop.css" type="text/css" />\n
+<link rel="stylesheet" href="{$cssurl}" type="text/css" />\n
 EOF;
 }
 

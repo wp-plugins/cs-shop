@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.5.1
+Stable tag: 0.9.5.2
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -29,6 +29,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 
 == Changelog ==
 
+= 0.9.5.2 =
+* Add show Review score, and refine some codes.
+
 = 0.9.5.1 =
 * Add display credit of Rakuten service.
 * If there is no product image to view an alternate image.
@@ -53,6 +56,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 0.9.5.2 =
+Add show Review score.
 
 = 0.9.5.1 =
 If you use the Rakuten, you must version up.

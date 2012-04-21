@@ -12,8 +12,8 @@ div.csshop-search-form form input[type="text"] {
     margin: 3px 0px;
     padding: 3px;
     line-height: 100%;
-    vertical-align: middle;
     width: 240px;
+    vertical-align: middle;
 }
 
 div.csshop-search-form form select {
@@ -84,5 +84,34 @@ div.csshop-item div.shop a {
     text-decoration: none;
 }
 
+div.csshop-item div.shop img {
+    border: none;
+    box-shadow: none;
+    vertical-align: middle;
+}
+
+div.csshop-item div.score {
+    vertical-align: middle;
+}
+
+div.csshop-item div.score img {
+    border: none;
+    box-shadow: none;
+    width: 15px;
+    height: 15px;
+    margin: 0;
+    padding: 0;
+    vertical-align: middle;
+}
+
 div.csshop-item div.description {
+}
+
+div.csshop-service-credits {
+    text-align: left;
+    vertical-align: middle;
+}
+
+div.csshop-service-credits img {
+    vertical-align: middle;
 }
