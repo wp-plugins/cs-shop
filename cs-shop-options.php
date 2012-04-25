@@ -17,6 +17,10 @@ $plugin_options = array(
         "アクセスキーID" => "csshop_amazon_access_id",
         "シークレットアクセスキー" => "csshop_amazon_secret_id",
         "アソシエイトID" => "csshop_amazon_assoc"
+    ),
+    "Yahoo!ショッピング" => array(
+        "アプリケーションID" => "csshop_yahoo_appid",
+        "アフィリエイトID" => "csshop_yahoo_affiliate_id"
     )
 );
 ?>

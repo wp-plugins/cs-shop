@@ -27,10 +27,22 @@ class ServiceBase implements IService
     protected $account;
 
     /**
+     * 商品検索条件
+     * @var array 商品検索条件の連想配列
+     */
+    protected $requests;
+
+    /**
      * キャッシュオブジェクト
      * @var object キャッシュオブジェクト
      */
     protected $cache;
+
+    /**
+     * 商品検索ページ総数
+     * @var int 商品検索ページ総数
+     */
+    protected $pages;
 
     /**
      * GET 要求ダウンロード処理(WordPress関数利用)
@@ -106,6 +118,15 @@ class ServiceBase implements IService
     }
 
     /**
+     * 商品検索条件の設定
+     * @param array $params 商品検索条件
+     */
+    public function setRequestParams(&$params)
+    {
+        $this->requests = $params;
+    }
+
+    /**
      * サービス識別名
      * @return string サービス識別名
      */
@@ -125,10 +146,9 @@ class ServiceBase implements IService
 
     /**
      * 商品検索ソート方法取得
-     * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes($category = "")
+    public function getSortTypes()
     {
         return array();
     }
@@ -139,25 +159,24 @@ class ServiceBase implements IService
      */
     public function getPageCount()
     {
-        return 0;
+        return $this->pages;
     }
 
     /**
      * カテゴリ検索
-     * @param string $parent 基底カテゴリ
+     * @param string $category 基底カテゴリ
      * @return array カテゴリ情報の連想配列
      */
-    public function getCategories($parent = "")
+    public function getCategories($category = "")
     {
         return array();
     }
 
     /**
      * 商品検索
-     * @param array $search 商品検索条件
      * @return array 商品情報の連想配列
      */
-    public function getItems(&$search)
+    public function getItems()
     {
         return array();
     }

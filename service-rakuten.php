@@ -16,12 +16,6 @@ require_once "service-base.php";
 class Rakuten extends ServiceBase
 {
     /**
-     * 商品検索ページ総数
-     * @var int 商品検索ページ総数
-     */
-    private $pageCount;
-
-    /**
      * 商品検索ソート方法
      * @var array 商品ソート指定の配列
      */
@@ -59,13 +53,13 @@ class Rakuten extends ServiceBase
     /**
      * カテゴリ検索クエリ生成
      * @link http://webservice.rakuten.co.jp/api/genresearch/
-     * @param string $parent 対象カテゴリ
+     * @param string $category 対象カテゴリ
      * @return string RESTクエリ文字列
      */
-    private function queryCategories($parent)
+    private function queryCategories($category)
     {
-        if (empty($parent)) {
-            $parent = 0;
+        if (empty($category)) {
+            $category = 0;
         }
         $baseurl = "http://api.rakuten.co.jp/rws/3.0/rest";
         $params = array();
@@ -74,7 +68,7 @@ class Rakuten extends ServiceBase
         $params["operation"] = "GenreSearch";
         $params["version"] = "2007-04-11";
         $params["genrePath"] = 0;
-        $params["genreId"] = $parent;
+        $params["genreId"] = $category;
         ksort($params);
         return $baseurl . "?" . http_build_query($params);
     }
@@ -82,10 +76,9 @@ class Rakuten extends ServiceBase
     /**
      * 商品検索クエリ生成
      * @link http://webservice.rakuten.co.jp/api/itemsearch/
-     * @param array $search 商品検索条件
      * @return string RESTクエリ文字列
      */
-    private function queryItems(&$search)
+    private function queryItems()
     {
         $baseurl = "http://api.rakuten.co.jp/rws/3.0/rest";
         $params = array();
@@ -93,25 +86,25 @@ class Rakuten extends ServiceBase
         $params["affiliateId"] = $this->account["affiliateId"];
         $params["operation"] = "ItemSearch";
         $params["version"] = "2010-09-15";
-        $params["hits"] = empty($search["pagesize"]) ? 10 : $search["pagesize"];
+        $params["hits"] = $this->requests["pagesize"];
         $params["availability"] = 1;
         $params["field"] = 1;
-        $params["carrier"] = empty($search["mobile"]) ? 0 : 1;
+        $params["carrier"] = empty($this->requests["mobile"]) ? 0 : 1;
         $params["imageFlag"] = 1;
         $params["purchaseType"] = 0;
-        $params["genreId"] = empty($search["category"]) ? "0" : $search["category"];
-        if (!empty($search["keyword"])) {
-            $params["keyword"] = $search["keyword"];
+        $params["genreId"] = empty($this->requests["category"]) ? "0" : $this->requests["category"];
+        if (!empty($this->requests["keyword"])) {
+            $params["keyword"] = $this->requests["keyword"];
         }
-        if (!empty($search["shop"])) {
-            $params["shopCode"] = $search["shop"];
+        if (!empty($this->requests["shop"])) {
+            $params["shopCode"] = $this->requests["shop"];
         }
-        if (!empty($search["sort"]) && array_key_exists($search["sort"], $this->sortTypes)) {
-            $params["sort"] = $this->sortTypes[$search["sort"]];
+        if (!empty($this->requests["sort"]) && array_key_exists($this->requests["sort"], $this->sortTypes)) {
+            $params["sort"] = $this->sortTypes[$this->requests["sort"]];
         } else {
             $params["sort"] = "standard";
         }
-        $params["page"] = $search["page"];
+        $params["page"] = $this->requests["page"];
         ksort($params);
         return $baseurl . "?" . http_build_query($params);
     }
@@ -141,37 +134,27 @@ EOF;
 
     /**
      * 商品検索ソート方法取得
-     * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes($category = "")
+    public function getSortTypes()
     {
         return $this->sortTypes;
     }
 
     /**
-     * 商品検索ページ総数
-     * @return int 商品検索ページ総数
-     */
-    public function getPageCount()
-    {
-        return $this->pageCount;
-    }
-
-    /**
      * カテゴリ検索
      * @link http://webservice.rakuten.co.jp/api/genresearch/
-     * @param string $parent 基底カテゴリ
+     * @param string $category 基底カテゴリ
      * @return array カテゴリ情報の連想配列
      */
-    public function getCategories($parent = "")
+    public function getCategories($category = "")
     {
-        if (empty($parent)) {
-            $parent = 0;
+        if (empty($category)) {
+            $category = 0;
         }
 
         // RESTクエリ情報を取得
-        $query = $this->queryCategories($parent);
+        $query = $this->queryCategories($category);
 
         // RESTクエリ実行
         $strxml = $this->download($query, $query);
@@ -190,13 +173,12 @@ EOF;
     /**
      * 商品検索
      * @link http://webservice.rakuten.co.jp/api/itemsearch/
-     * @param array $search 商品検索条件
      * @return array 商品情報の連想配列
      */
-    public function getItems(&$search)
+    public function getItems()
     {
         // RESTクエリ情報を取得
-        $query = $this->queryItems($search);
+        $query = $this->queryItems();
 
         // RESTクエリ実行
         $strxml = $this->download($query, $query);
@@ -205,21 +187,21 @@ EOF;
         $objxml = simplexml_load_string($strxml);
         $hash = array();
         if (isset($objxml->Body->ItemSearch)) {
-            $this->pageCount = intval($objxml->Body->ItemSearch->pageCount);
+            $this->pages = intval($objxml->Body->ItemSearch->pageCount);
             foreach ($objxml->Body->ItemSearch->Items->Item as $node) {
                 array_push($hash, array(
                         "name" => (string)$node->itemName,
                         "price" => $this->formatPrice((string)$node->itemPrice, (string)$node->taxFlag, (string)$node->postageFlag),
                         "desc" => (string)$node->itemCaption,
                         "shop" => (string)$node->shopName,
-                        "score"=> floatval((string)$node->reviewAverage),
+                        "score" => floatval((string)$node->reviewAverage),
                         "aurl" => (string)$node->affiliateUrl,
-                        "iurl" => empty($search["mobile"]) ? (string)$node->mediumImageUrl : (string)$node->smallImageUrl,
+                        "iurl" => empty($this->requests["mobile"]) ? (string)$node->mediumImageUrl : (string)$node->smallImageUrl,
                         "surl" => (string)$node->shopUrl)
                 );
             }
         } else {
-            $this->pageCount = 0;
+            $this->pages = 0;
         }
         return $hash;
     }

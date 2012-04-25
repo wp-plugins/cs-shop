@@ -14,6 +14,12 @@ interface IService
     public function __construct($account);
 
     /**
+     * 商品検索条件の設定
+     * @param array $params 商品検索条件
+     */
+    public function setRequestParams(&$params);
+
+    /**
      * サービス識別名
      * @return string サービス識別名
      */
@@ -27,10 +33,9 @@ interface IService
 
     /**
      * 商品検索ソート方法取得
-     * @param string $category 検索対象のカテゴリ名
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes($category = "");
+    public function getSortTypes();
 
     /**
      * 商品検索ページ総数
@@ -40,17 +45,16 @@ interface IService
 
     /**
      * カテゴリ検索
-     * @param string $parent 基底カテゴリ
+     * @param string $category 基底カテゴリ
      * @return array カテゴリ情報の連想配列
      */
-    public function getCategories($parent = "");
+    public function getCategories($category = "");
 
     /**
      * 商品検索
-     * @param array $search 商品検索条件
      * @return array 商品情報の連想配列
      */
-    public function getItems(&$search);
+    public function getItems();
 }
 
 ?>

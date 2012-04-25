@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: You can easily create a product search page from the affiliate services of Japan.
-Version: 0.9.5.3
+Version: 0.9.6
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -28,12 +28,18 @@ License: GPL2
 /**
  * プラグインのバージョン
  */
-define('CS_SHOP_VER', '0.9.5.3');
+define('CS_SHOP_VER', '0.9.6');
 
 /**
  * プラグインのURLを CS_SHOP_URL 定数に設定(末尾に / は付かない)
  */
 define('CS_SHOP_URL', parse_url(WP_PLUGIN_URL, PHP_URL_PATH) . "/cs-shop");
+
+/**
+ * 開発・デバッグ用の設定
+ */
+ini_set('display_errors', 1);
+ini_set('error_reporting', E_ALL);
 
 /**
  * 表示用ショートコード [csshop] 実行処理
@@ -95,6 +101,17 @@ function csshop_view($atts, $content = null)
                 => get_option("csshop_amazon_assoc")
             ));
             break;
+        case "yahoo":
+
+            // Yahoo!ショッピング
+            require_once 'service-yahoo.php';
+            $service = new Yahoo(array(
+                "appid"
+                => get_option("csshop_yahoo_appid"),
+                "affiliate_id"
+                => get_option("csshop_yahoo_affiliate_id")
+            ));
+            break;
         default:
 
             // 定義されていないサービスの場合(何も出力しない)
@@ -111,8 +128,16 @@ function csshop_view($atts, $content = null)
                 $params["page"] = "1";
             }
 
+            // ページサイズ値の補正
+            if (!isset($params["pagesize"]) || empty($params["pagesize"])) {
+                $params["pagesize"] = "10";
+            }
+
+            // 商品検索条件の設定
+            $service->setRequestParams($params);
+
             // 商品検索実行
-            $items = $service->getItems($params);
+            $items = $service->getItems();
 
             // 検索フォーム表示
             $output .= showSearchForm($service, $params);

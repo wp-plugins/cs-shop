@@ -16,12 +16,6 @@ require_once "service-base.php";
 class Amazon extends ServiceBase
 {
     /**
-     * 商品検索ページ総数
-     * @var int 商品検索ページ総数
-     */
-    private $pageCount;
-
-    /**
      * SearchIndex定義
      * @var array SearchIndex定義
      */
@@ -427,9 +421,10 @@ class Amazon extends ServiceBase
         if ($pos) {
             return explode(',', $category, 2);
         } else {
-            if (array_key_exists($category, $this->search_indexes)) {
-                $nodeid = $this->search_indexes[$category]["browse"];
-                return array($category, $nodeid);
+            $search_index = $category;
+            if (array_key_exists($search_index, $this->search_indexes)) {
+                $node_id = $this->search_indexes[$search_index]["browse"];
+                return array($search_index, $node_id);
             }
         }
         return array("", "");
@@ -438,10 +433,10 @@ class Amazon extends ServiceBase
     /**
      * カテゴリ検索クエリ生成
      * @link http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/Welcome.html
-     * @param string $parent 対象カテゴリ
+     * @param string $node_id 対象カテゴリ(BrowseNode)
      * @return array クエリ情報(署名されていないRESTクエリ文字列,署名されたRESTクエリ文字列)
      */
-    private function queryCategories($parent)
+    private function queryCategories($node_id)
     {
         // クエリ生成
         $baseurl = "http://ecs.amazonaws.jp/onca/xml";
@@ -451,7 +446,7 @@ class Amazon extends ServiceBase
         $params["AssociateTag"] = $this->account["AssociateTag"];
         $params["Version"] = "2009-07-01";
         $params["Operation"] = "BrowseNodeLookup";
-        $params["BrowseNodeId"] = $parent;
+        $params["BrowseNodeId"] = $node_id;
         ksort($params);
         $no_signed_query = $this->http_build_query_3986($params);
         $params["Timestamp"] = gmdate("Y-m-d\TH:i:s\Z");
@@ -464,13 +459,12 @@ class Amazon extends ServiceBase
     /**
      * 商品検索クエリ生成
      * @link http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/Welcome.html
-     * @param array $search 商品検索条件
      * @return string RESTクエリ文字列
      */
-    private function queryItems(&$search)
+    private function queryItems()
     {
         // カテゴリ情報を分割
-        $category_array = $this->parseCategory($search["category"]);
+        $category_array = $this->parseCategory($this->requests["category"]);
 
         // クエリ生成
         $baseurl = "http://ecs.amazonaws.jp/onca/xml";
@@ -483,8 +477,8 @@ class Amazon extends ServiceBase
         $params["ResponseGroup"] = "Medium,OfferSummary,Reviews";
 
         // ページ番号の指定(Amazon のページサイズは10固定)
-        if (!empty($search["page"])) {
-            $params["ItemPage"] = $search["page"];
+        if (!empty($this->requests["page"])) {
+            $params["ItemPage"] = $this->requests["page"];
         }
 
         // SearchIndex 指定有無の判定
@@ -492,8 +486,8 @@ class Amazon extends ServiceBase
 
             // SearchIndex が All の場合は Keywords のみ指定可能
             $params["SearchIndex"] = "All";
-            if (!empty($search["keyword"])) {
-                $params["Keywords"] = $search["keyword"];
+            if (!empty($this->requests["keyword"])) {
+                $params["Keywords"] = $this->requests["keyword"];
             }
         } else {
 
@@ -502,9 +496,9 @@ class Amazon extends ServiceBase
             $params["BrowseNode"] = $category_array[1];
 
             // 並び替えの設定
-            $sort_types = $this->getSortTypes($category_array[0]);
-            if (array_key_exists($search["sort"], $sort_types)) {
-                $params["Sort"] = $sort_types[$search["sort"]];
+            $sort_types = $this->getSortTypes();
+            if (array_key_exists($this->requests["sort"], $sort_types)) {
+                $params["Sort"] = $sort_types[$this->requests["sort"]];
             }
 
             // SearchIndexがサポートしているパラメタを設定
@@ -512,8 +506,8 @@ class Amazon extends ServiceBase
                 $extend_params = $this->search_indexes[$category_array[0]]["search"];
             }
             foreach ($extend_params as $k => $v) {
-                if (!empty($search[$k])) {
-                    $params[$v] = $search[$k];
+                if (!empty($this->requests[$k])) {
+                    $params[$v] = $this->requests[$k];
                 }
             }
         }
@@ -537,13 +531,12 @@ class Amazon extends ServiceBase
 
     /**
      * 商品検索ソート方法取得
-     * @param string $category 選択カテゴリ
      * @return array ソート指定の連想配列
      */
-    public function getSortTypes($category = "")
+    public function getSortTypes()
     {
         // カテゴリ情報を分割
-        $category_array = $this->parseCategory($category);
+        $category_array = $this->parseCategory($this->requests["category"]);
 
         // SearchIndexを取得
         $search_index = $category_array[0];
@@ -558,30 +551,21 @@ class Amazon extends ServiceBase
     }
 
     /**
-     * 商品検索ページ総数
-     * @return int 商品検索ページ総数
-     */
-    public function getPageCount()
-    {
-        return $this->pageCount;
-    }
-
-    /**
      * カテゴリ検索
      * @link http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/Welcome.html
-     * @param string $parent 基底カテゴリ
+     * @param string $category 基底カテゴリ
      * @return array カテゴリ情報の連想配列
      */
-    public function getCategories($parent = "")
+    public function getCategories($category = "")
     {
         // カテゴリ情報を分割
-        $category_array = $this->parseCategory($parent);
+        $category_array = $this->parseCategory($category);
 
         // ブラウズノードを取得
-        $nodeid = $category_array[1];
+        $node_id = $category_array[1];
 
         // Amazon はルートカテゴリが存在しないため定義情報から取得
-        if (empty($nodeid)) {
+        if (empty($node_id)) {
             $hash = array();
             foreach ($this->search_indexes as $search_index_name => $search_index_hash) {
                 $hash[$search_index_name . ',' . $search_index_hash["browse"]] = $search_index_hash["name"];
@@ -590,13 +574,13 @@ class Amazon extends ServiceBase
         }
 
         // RESTクエリ情報を取得
-        $queries = $this->queryCategories($nodeid);
+        $queries = $this->queryCategories($node_id);
 
         // RESTクエリ実行
         $strxml = $this->download($queries[0], $queries[1]);
         $objxml = simplexml_load_string($strxml);
         $hash = array();
-        if (isset($objxml->BrowseNodes->BrowseNode)) {
+        if (isset($objxml->BrowseNodes->BrowseNode->Children)) {
             foreach ($objxml->BrowseNodes->BrowseNode->Children->BrowseNode as $node) {
                 $hash[$category_array[0] . ',' . (string)$node->BrowseNodeId] = (string)$node->Name;
             }
@@ -607,20 +591,19 @@ class Amazon extends ServiceBase
     /**
      * 商品検索
      * @link http://docs.amazonwebservices.com/AWSECommerceService/latest/DG/Welcome.html
-     * @param array $search 商品検索条件
      * @return array 商品情報の連想配列
      */
-    public function getItems(&$search)
+    public function getItems()
     {
         // RESTクエリ情報を取得
-        $queries = $this->queryItems($search);
+        $queries = $this->queryItems();
 
         // RESTクエリ実行
         $strxml = $this->download($queries[0], $queries[1]);
         $objxml = simplexml_load_string($strxml);
         $hash = array();
         if (isset($objxml->Items)) {
-            $this->pageCount = min(intval($objxml->Items->TotalPages), (($objxml->Items->Request->ItemSearchRequest->SearchIndex == "All") ? 5 : 10));
+            $this->pages = min(intval($objxml->Items->TotalPages), (($objxml->Items->Request->ItemSearchRequest->SearchIndex == "All") ? 5 : 10));
             foreach ($objxml->Items->Item as $node) {
                 array_push($hash, array(
                         "name" => (string)$node->ItemAttributes->Title,
@@ -628,21 +611,21 @@ class Amazon extends ServiceBase
                         "desc" => join("\n",
                             array(
                                 "ASIN: " . (string)$node->ASIN,
-                                (string)$node->ItemAttributes->Manufacturer,
-                                str_replace(array("\r", "\n", "　", "  "), " ", strip_tags((string)$node->ItemAttributes->Feature)),
-                                str_replace(array("\r", "\n", "　", "  "), " ", strip_tags((string)$node->EditorialReviews->EditorialReview->Content))
+                                (string)@$node->ItemAttributes->Manufacturer,
+                                str_replace(array("\r", "\n", "　", "  "), " ", strip_tags((string)@$node->ItemAttributes->Feature)),
+                                str_replace(array("\r", "\n", "　", "  "), " ", strip_tags((string)@$node->EditorialReviews->EditorialReview->Content))
                             )
                         ),
                         "shop" => "Amazon.co.jp",
-                        "score" => floatval((string)$node->CustomerReviews->AverageRating), // 現在は AverageRating は存在しない
+                        "score" => floatval((string)@$node->CustomerReviews->AverageRating), // 現在は AverageRating は存在しない
                         "aurl" => (string)$node->DetailPageURL,
-                        "iurl" => empty($search["mobile"]) ? (string)$node->MediumImage->URL : (string)$node->SmallImage->URL,
+                        "iurl" => empty($this->requests["mobile"]) ? (string)$node->MediumImage->URL : (string)$node->SmallImage->URL,
                         "surl" => "http://www.amazon.co.jp/"
                     )
                 );
             }
         } else {
-            $this->pageCount = 0;
+            $this->pages = 0;
         }
         return $hash;
     }

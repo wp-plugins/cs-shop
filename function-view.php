@@ -117,7 +117,7 @@ function showCategorySelector(&$service, $current)
                 $output .= "<option value=\"" . o_escape($k1) . "\">　" . o_escape($v1) . "</option>\n";
             }
         } else {
-            $output .= "<option value=\"" . o_escape($current) . "\">変更しない</option>\n";
+            $output .= "<option value=\"" . o_escape($current) . "\">選択中のカテゴリ</option>\n";
         }
         $output .= "<option value=\"\">すべてのカテゴリ</option>\n";
         $output .= "</select>\n";
@@ -130,11 +130,10 @@ function showCategorySelector(&$service, $current)
 /**
  * 並び替え方法選択用ドロップダウンリスト
  * @param object $service サービス情報
- * @param string $category 現在のカテゴリ
  * @param string $current 現在の並び替え方法
  * @return string 出力コンテンツ
  */
-function showSortTypeSelector(&$service, $category, $current)
+function showSortTypeSelector(&$service, $current)
 {
     // 出力コンテンツ
     $output = "";
@@ -155,11 +154,11 @@ function showSortTypeSelector(&$service, $category, $current)
     );
 
     // 対応している並び替え方法の取得
-    $supportTypes = $service->getSortTypes($category);
+    $supportTypes = $service->getSortTypes();
 
     // 並び替え方法の表示
     $output .= "<select name=\"sort\" onchange=\"submit();\">\n";
-    $output .= "<option value=\"\">指定なし</option>\n";
+    $output .= "<option value=\"\">並び順の指定なし</option>\n";
     foreach ($supportTypes as $k1 => $v1) {
         $selected = ($current == $k1) ? " selected" : "";
         $output .= "<option value=\"" . o_escape($k1) . "\"$selected>" . $sortTypeNames[$k1] . "</option>\n";
@@ -234,7 +233,7 @@ EOT;
     $output .= showCategorySelector($service, $params["category"]);
 
     // 並び替え方法変更リストの表示
-    $output .= showSortTypeSelector($service, $params["category"], $params["sort"]);
+    $output .= showSortTypeSelector($service, $params["sort"]);
 
     // 検索フォームの終了
     $output .= <<< EOT
