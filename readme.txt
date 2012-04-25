@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.6
+Stable tag: 0.9.6.1
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -28,6 +28,9 @@ Unfortunately, this plugin is only available in Japan.
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
 
 == Changelog ==
+
+= 0.9.6.1 =
+* Remove debugging code.
 
 = 0.9.6 =
 * Add support Yahoo! Shopping API.
@@ -62,6 +65,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 0.9.6.1 =
+Re-release version 0.9.6.
 
 = 0.9.6 =
 Support Yahoo! Shopping.
