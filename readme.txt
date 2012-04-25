@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.5.2
+Stable tag: 0.9.5.3
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -28,6 +28,9 @@ Unfortunately, this plugin is only available in Japan.
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
 
 == Changelog ==
+
+= 0.9.5.3 =
+* Fixed control of the authority of the admin menu.
 
 = 0.9.5.2 =
 * Add show Review score, and refine some codes.
@@ -56,6 +59,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 0.9.5.3 =
+Admin menu security update.
 
 = 0.9.5.2 =
 Add show Review score.

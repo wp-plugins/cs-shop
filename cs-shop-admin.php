@@ -16,7 +16,7 @@ add_action('admin_menu', 'csshop_admin_menu');
 // 管理メニュー選択時のフック処理
 function csshop_admin_menu()
 {
-    add_options_page('CS Shop', 'CS Shop', manage_options, __FILE__, 'csshop_options');
+    add_options_page('CS Shop', 'CS Shop', 'manage_options', __FILE__, 'csshop_options');
 }
 
 // 設定画面表示
