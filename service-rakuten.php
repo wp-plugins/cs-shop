@@ -197,7 +197,8 @@ EOF;
                         "score" => floatval((string)$node->reviewAverage),
                         "aurl" => (string)$node->affiliateUrl,
                         "iurl" => empty($this->requests["mobile"]) ? (string)$node->mediumImageUrl : (string)$node->smallImageUrl,
-                        "surl" => (string)$node->shopUrl)
+                        "surl" => (string)$node->shopUrl
+                    )
                 );
             }
         } else {

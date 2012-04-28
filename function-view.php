@@ -23,7 +23,6 @@ function getCurrentUrl()
  */
 function getScoreLevel($score)
 {
-
     // 出力コンテンツ
     $output = "";
 
@@ -54,15 +53,24 @@ function getScoreLevel($score)
 /**
  * 最上位カテゴリ一覧
  * @param object $service サービス情報
+ * @param array $params 要求パラメタ
  * @return string 出力コンテンツ
  */
-function showRootCategories(&$service)
+function showRootCategories(&$service, &$params)
 {
     // 出力コンテンツ
     $output = "";
 
+    // 要求パラメタの複製を作成(指定キーのみ)
+    $work = array();
+    foreach (array("service", "pagesize", "keyword", "shop", "sort") as $k) {
+        if (array_key_exists($k, $params) && !empty($params[$k])) {
+            $work[$k] = $params[$k];
+        }
+    }
+
     // 基準URLの生成
-    $url = getCurrentUrl() . "service=" . urlencode($service->serviceName()) . "&action=search";
+    $url = getCurrentUrl() . http_build_query($work);
 
     // 第2階層まで表示
     foreach ($service->getCategories() as $k1 => $v1) {
@@ -182,7 +190,7 @@ function showSearchForm(&$service, &$params)
 
     // 要求パラメタの出力エスケープ処理(指定キーのみ)
     $work = array();
-    foreach (array("service", "action", "pagesize", "keyword", "shop", "category", "sort") as $k) {
+    foreach (array("service", "pagesize", "keyword", "shop", "category", "sort") as $k) {
         if (array_key_exists($k, $params) && !empty($params[$k])) {
             $work[$k] = o_escape($params[$k]);
         } else {
@@ -217,7 +225,6 @@ function showSearchForm(&$service, &$params)
 <form method="get" action="{$url}">
 <input type="text" name="keyword" value="{$work["keyword"]}" />
 <input type="hidden" name="service" value="{$work["service"]}" />
-<input type="hidden" name="action" value="{$work["action"]}" />
 <input type="hidden" name="shop" value="{$work["shop"]}" />
 <input type="hidden" name="pagesize" value="{$work["pagesize"]}" />\n
 EOT;
@@ -319,7 +326,7 @@ function showPageLinks(&$service, &$params)
 
     // 要求パラメタの複製を作成(指定キーのみ)
     $work = array();
-    foreach (array("service", "action", "pagesize", "keyword", "shop", "category", "sort") as $k) {
+    foreach (array("service", "pagesize", "keyword", "shop", "category", "sort") as $k) {
         if (array_key_exists($k, $params) && !empty($params[$k])) {
             $work[$k] = $params[$k];
         }

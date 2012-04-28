@@ -21,6 +21,12 @@ $plugin_options = array(
     "Yahoo!ショッピング" => array(
         "アプリケーションID" => "csshop_yahoo_appid",
         "アフィリエイトID" => "csshop_yahoo_affiliate_id"
+    ),
+    "LinkShare" => array(
+        "トークン" => "csshop_linkshare_token",
+        "マーチャンダイザー FTP サーバ" => "csshop_linkshare_md_host",
+        "マーチャンダイザー FTP ユーザ" => "csshop_linkshare_md_user",
+        "マーチャンダイザー FTP パスワード" => "csshop_linkshare_md_pass"
     )
 );
 ?>

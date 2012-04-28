@@ -195,7 +195,8 @@ EOF;
                         "score" => floatval((string)$node->Review->Rate),
                         "aurl" => (string)$node->Url,
                         "iurl" => empty($this->requests["mobile"]) ? (string)$node->Image->Medium : (string)$node->Image->Small,
-                        "surl" => (string)$node->Store->Url)
+                        "surl" => (string)$node->Store->Url
+                    )
                 );
             }
         } else {

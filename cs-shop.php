@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: You can easily create a product search page from the affiliate services of Japan.
-Version: 0.9.6.1
+Version: 0.9.7
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -28,7 +28,7 @@ License: GPL2
 /**
  * プラグインのバージョン
  */
-define('CS_SHOP_VER', '0.9.6.1');
+define('CS_SHOP_VER', '0.9.7');
 
 /**
  * プラグインのURLを CS_SHOP_URL 定数に設定(末尾に / は付かない)
@@ -38,8 +38,8 @@ define('CS_SHOP_URL', parse_url(WP_PLUGIN_URL, PHP_URL_PATH) . "/cs-shop");
 /**
  * 開発・デバッグ用の設定
  */
-// ini_set('display_errors', 1);
-// ini_set('error_reporting', E_ALL);
+//ini_set('display_errors', 1);
+//ini_set('error_reporting', E_ALL);
 
 /**
  * 表示用ショートコード [csshop] 実行処理
@@ -59,7 +59,6 @@ function csshop_view($atts, $content = null)
     // 要求パラメタを WordPress ショートコード属性値で設定
     $params = shortcode_atts(array(
             "service" => "",
-            "action" => "",
             "shop" => "",
             "pagesize" => "",
             "keyword" => "",
@@ -112,6 +111,21 @@ function csshop_view($atts, $content = null)
                 => get_option("csshop_yahoo_affiliate_id")
             ));
             break;
+        case "linkshare":
+
+            // LinkShare
+            require_once 'service-linkshare.php';
+            $service = new LinkShare(array(
+                "token"
+                => get_option("csshop_linkshare_token"),
+                "md_host"
+                => get_option("csshop_linkshare_md_host"),
+                "md_user"
+                => get_option("csshop_linkshare_md_user"),
+                "md_pass"
+                => get_option("csshop_linkshare_md_pass")
+            ));
+            break;
         default:
 
             // 定義されていないサービスの場合(何も出力しない)
@@ -119,61 +133,51 @@ function csshop_view($atts, $content = null)
             break;
     }
 
-    // アクション別処理
-    switch ($params["action"]) {
-        case "search":
+    // 現在ページ位置の補正
+    if (!isset($params["page"]) || empty($params["page"])) {
+        $params["page"] = "1";
+    }
 
-            // 現在ページ位置の補正
-            if (!isset($params["page"]) || empty($params["page"])) {
-                $params["page"] = "1";
-            }
+    // ページサイズ値の補正
+    if (!isset($params["pagesize"]) || empty($params["pagesize"])) {
+        $params["pagesize"] = "10";
+    }
 
-            // ページサイズ値の補正
-            if (!isset($params["pagesize"]) || empty($params["pagesize"])) {
-                $params["pagesize"] = "10";
-            }
+    // 商品検索条件の設定
+    $service->setRequestParams($params);
 
-            // 商品検索条件の設定
-            $service->setRequestParams($params);
+    // 検索フォーム表示
+    $output .= showSearchForm($service, $params);
 
-            // 商品検索実行
-            $items = $service->getItems();
+    // 商品検索実行
+    $items = $service->getItems();
 
-            // 検索フォーム表示
-            $output .= showSearchForm($service, $params);
+    // 検索結果の存在確認
+    if (0 < count($items)) {
 
-            // 検索結果の存在確認
-            if (0 < count($items)) {
+        // ページナビゲータ生成
+        $pagelinks = showPageLinks($service, $params);
 
-                // ページナビゲータ生成
-                $pagelinks = showPageLinks($service, $params);
+        // 上部ページナビゲータ表示
+        $output .= $pagelinks;
 
-                // 上部ページナビゲータ表示
-                $output .= $pagelinks;
+        // 商品一覧表示
+        $output .= showItems($params, $items);
 
-                // 商品一覧表示
-                $output .= showItems($params, $items);
+        // 下部ページナビゲータ表示
+        $output .= $pagelinks;
 
-                // 下部ページナビゲータ表示
-                $output .= $pagelinks;
-            } else {
+    } else {
 
-                // 検索結果が 0 件の場合(キーワードが指定されている場合のみ)
-                if (!empty($params["keyword"])) {
+        // 検索結果が 0 件の場合(キーワードが指定されている場合のみ)
+        if (!empty($params["keyword"])) {
 
-                    // 検索結果が無いメッセージ
-                    $output .= "<p>検索条件に該当する商品はありませんでした。</p>";
+            // 検索結果が無いメッセージ
+            $output .= "<p>検索条件に該当する商品はありませんでした。</p>";
+        }
 
-                    // 最上位カテゴリ一覧を表示
-                    $output .= showRootCategories($service);
-                }
-            }
-            break;
-        default:
-
-            // 指定されていない場合(最上位カテゴリ一覧を表示)
-            $output .= showRootCategories($service);
-            break;
+        // 最上位カテゴリ一覧を表示
+        $output .= showRootCategories($service, $params);
     }
 
     // サービスクレジット表示

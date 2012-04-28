@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ads,affiliate
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.6.1
+Stable tag: 0.9.7
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -28,6 +28,10 @@ Unfortunately, this plugin is only available in Japan.
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
 
 == Changelog ==
+
+= 0.9.7 =
+* Add support LinkShare.
+* Remove "action" parameter from shortcode attributes.
 
 = 0.9.6.1 =
 * Remove debugging code.
@@ -66,6 +70,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 
 == Upgrade Notice ==
 
+= 0.9.7 =
+Support LinkShare.
+
 = 0.9.6.1 =
 Re-release version 0.9.6.
 
@@ -103,12 +110,20 @@ The first release version.
 
 To view the results of a search by specifying the keyword 'foo' automatically.
 
-`[csshop service="rakuten" action="search" keyword="foo"]`
+`[csshop service="rakuten" keyword="foo"]`
 
-`[csshop service="amazon" action="search" keyword="foo"]`
+`[csshop service="amazon" keyword="foo"]`
+
+`[csshop service="yahoo" keyword="foo"]`
+
+`[csshop service="linkshare" keyword="foo"]`
 
 To view the results of a search by specifying the specified category automatically.
 
-`[csshop service="rakuten" action="search" category="100026"]`
+`[csshop service="rakuten" category="100026"]`
 
-`[csshop service="amazon" action="search" category="Electronics"]`
+`[csshop service="amazon" category="Electronics"]`
+
+`[csshop service="yahoo" category="Electronics"]`
+
+`[csshop service="linkshare" category="Electronics"]`
