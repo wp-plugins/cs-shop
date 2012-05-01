@@ -18,4 +18,11 @@ foreach (array_values($plugin_options) as $group_options) {
         delete_option($option_id);
     }
 }
+
+/**
+ * 旧バージョンで使用していた廃止定義の削除
+ */
+foreach ($obsolete_options as $option_id) {
+    delete_option($option_id);
+}
 ?>

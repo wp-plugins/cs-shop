@@ -1,9 +1,9 @@
 === CS Shop ===
 Contributors: cottonspace
-Tags: ads,affiliate
+Tags: ad,ads,advertising,affiliate,shortcode,yahoo,amazon
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.7
+Stable tag: 0.9.7.1
 
 You can easily create a product search page from the affiliate services of Japan.
 
@@ -28,6 +28,9 @@ Unfortunately, this plugin is only available in Japan.
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
 
 == Changelog ==
+
+= 0.9.7.1 =
+* Remove the feature of LinkShare Crossover search and Merchandiser integration.
 
 = 0.9.7 =
 * Add support LinkShare.
@@ -69,6 +72,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 0.9.7.1 =
+Remove the feature of LinkShare Crossover search and Merchandiser integration.
 
 = 0.9.7 =
 Support LinkShare.

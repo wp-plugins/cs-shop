@@ -23,10 +23,16 @@ $plugin_options = array(
         "アフィリエイトID" => "csshop_yahoo_affiliate_id"
     ),
     "LinkShare" => array(
-        "トークン" => "csshop_linkshare_token",
-        "マーチャンダイザー FTP サーバ" => "csshop_linkshare_md_host",
-        "マーチャンダイザー FTP ユーザ" => "csshop_linkshare_md_user",
-        "マーチャンダイザー FTP パスワード" => "csshop_linkshare_md_pass"
+        "トークン" => "csshop_linkshare_token"
     )
+);
+
+/**
+ * 旧バージョンで使用していた廃止定義(アンインストール時の設定削除に使用)
+ */
+$obsolete_options = array(
+    "csshop_linkshare_md_host",
+    "csshop_linkshare_md_user",
+    "csshop_linkshare_md_pass"
 );
 ?>
