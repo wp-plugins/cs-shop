@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: You can easily create a product search page from the affiliate services of Japan.
-Version: 0.9.7.1
+Version: 0.9.8
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -23,12 +23,11 @@ License: GPL2
     along with this program; if not, write to the Free Software
     Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 */
-?>
-<?php
+
 /**
  * プラグインのバージョン
  */
-define('CS_SHOP_VER', '0.9.7.1');
+define('CS_SHOP_VER', '0.9.8');
 
 /**
  * プラグインのURLを CS_SHOP_URL 定数に設定(末尾に / は付かない)
@@ -117,13 +116,16 @@ function csshop_view($atts, $content = null)
             require_once 'service-linkshare.php';
             $service = new LinkShare(array(
                 "token"
-                => get_option("csshop_linkshare_token"),
-                "md_host"
-                => get_option("csshop_linkshare_md_host"),
-                "md_user"
-                => get_option("csshop_linkshare_md_user"),
-                "md_pass"
-                => get_option("csshop_linkshare_md_pass")
+                => get_option("csshop_linkshare_token")
+            ));
+            break;
+        case "valuecommerce":
+
+            // ValueCommerce
+            require_once 'service-valuecommerce.php';
+            $service = new ValueCommerce(array(
+                "token"
+                => get_option("csshop_valuecommerce_token")
             ));
             break;
         default:
@@ -214,4 +216,3 @@ if (is_admin()) {
     // CSSをヘッダに追加
     add_action('wp_head', 'csshop_css');
 }
-?>

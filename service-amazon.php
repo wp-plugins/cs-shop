@@ -630,5 +630,3 @@ class Amazon extends ServiceBase
         return $hash;
     }
 }
-
-?>

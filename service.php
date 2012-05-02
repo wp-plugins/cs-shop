@@ -56,5 +56,3 @@ interface IService
      */
     public function getItems();
 }
-
-?>

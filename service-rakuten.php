@@ -207,5 +207,3 @@ EOF;
         return $hash;
     }
 }
-
-?>

@@ -40,5 +40,3 @@ function getQueryParams(&$params)
         $params[$k] = i_escape($v);
     }
 }
-
-?>

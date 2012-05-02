@@ -181,5 +181,3 @@ class ServiceBase implements IService
         return array();
     }
 }
-
-?>

@@ -143,5 +143,3 @@ EOF;
         return $hash;
     }
 }
-
-?>

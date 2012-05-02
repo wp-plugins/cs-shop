@@ -24,15 +24,17 @@ $plugin_options = array(
     ),
     "LinkShare" => array(
         "トークン" => "csshop_linkshare_token"
+    ),
+    "ValueCommerce" => array(
+        "トークン" => "csshop_valuecommerce_token"
     )
 );
 
 /**
- * 旧バージョンで使用していた廃止定義(アンインストール時の設定削除に使用)
+ * 旧バージョンで使用していた定義(アンインストール時の設定削除に使用)
  */
 $obsolete_options = array(
     "csshop_linkshare_md_host",
     "csshop_linkshare_md_user",
     "csshop_linkshare_md_pass"
 );
-?>
