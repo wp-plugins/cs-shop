@@ -108,6 +108,7 @@ div.csshop-item div.description {
 }
 
 div.csshop-service-credits {
+    clear: both;
     text-align: left;
     vertical-align: middle;
 }

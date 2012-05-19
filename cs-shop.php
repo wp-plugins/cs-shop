@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: You can easily create a product search page from the affiliate services of Japan.
-Version: 0.9.8
+Version: 0.9.9
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -27,7 +27,7 @@ License: GPL2
 /**
  * プラグインのバージョン
  */
-define('CS_SHOP_VER', '0.9.8');
+define('CS_SHOP_VER', '0.9.9');
 
 /**
  * プラグインのURLを CS_SHOP_URL 定数に設定(末尾に / は付かない)
@@ -62,7 +62,8 @@ function csshop_view($atts, $content = null)
             "pagesize" => "",
             "keyword" => "",
             "category" => "",
-            "sort" => ""),
+            "sort" => "",
+            "mode" => ""),
         $atts);
 
     // 要求パラメタに GET クエリ文字列要求値を設定(ショートコード属性値を上書き)
@@ -75,9 +76,9 @@ function csshop_view($atts, $content = null)
 
     // アフィリエイトサービス選択(WordPress プラグイン設定を取得してサービス別のインスタンスを生成)
     switch ($params["service"]) {
-        case "rakuten":
 
-            // 楽天アフィリエイト
+        // 楽天アフィリエイト
+        case "rakuten":
             require_once 'service-rakuten.php';
             $service = new Rakuten(array(
                 "affiliateId"
@@ -86,9 +87,9 @@ function csshop_view($atts, $content = null)
                 => get_option("csshop_rakuten_did")
             ));
             break;
-        case "amazon":
 
-            // Amazon
+        // Amazon
+        case "amazon":
             require_once 'service-amazon.php';
             $service = new Amazon(array(
                 "AccessKeyId"
@@ -99,9 +100,9 @@ function csshop_view($atts, $content = null)
                 => get_option("csshop_amazon_assoc")
             ));
             break;
-        case "yahoo":
 
-            // Yahoo!ショッピング
+        // Yahoo!ショッピング
+        case "yahoo":
             require_once 'service-yahoo.php';
             $service = new Yahoo(array(
                 "appid"
@@ -110,27 +111,27 @@ function csshop_view($atts, $content = null)
                 => get_option("csshop_yahoo_affiliate_id")
             ));
             break;
-        case "linkshare":
 
-            // LinkShare
+        // LinkShare
+        case "linkshare":
             require_once 'service-linkshare.php';
             $service = new LinkShare(array(
                 "token"
                 => get_option("csshop_linkshare_token")
             ));
             break;
-        case "valuecommerce":
 
-            // ValueCommerce
+        // ValueCommerce
+        case "valuecommerce":
             require_once 'service-valuecommerce.php';
             $service = new ValueCommerce(array(
                 "token"
                 => get_option("csshop_valuecommerce_token")
             ));
             break;
-        default:
 
-            // 定義されていないサービスの場合(何も出力しない)
+        // 定義されていないサービスの場合(何も出力しない)
+        default:
             return $output;
             break;
     }
@@ -142,48 +143,85 @@ function csshop_view($atts, $content = null)
 
     // ページサイズ値の補正
     if (!isset($params["pagesize"]) || empty($params["pagesize"])) {
-        $params["pagesize"] = "10";
+
+        // 表示モード別デフォルト値
+        switch ($params["mode"]) {
+
+            // 埋め込みモード
+            case "embed":
+                $params["pagesize"] = "1";
+                break;
+
+            // 標準モード
+            default:
+                $params["pagesize"] = "10";
+                break;
+        }
     }
 
     // 商品検索条件の設定
     $service->setRequestParams($params);
 
-    // 検索フォーム表示
-    $output .= showSearchForm($service, $params);
-
     // 商品検索実行
     $items = $service->getItems();
 
-    // 検索結果の存在確認
-    if (0 < count($items)) {
+    // 表示モード別結果表示
+    switch ($params["mode"]) {
 
-        // ページナビゲータ生成
-        $pagelinks = showPageLinks($service, $params);
+        // 埋め込みモード(検索結果のみ表示)
+        case "embed":
 
-        // 上部ページナビゲータ表示
-        $output .= $pagelinks;
+            // 検索結果の存在確認
+            if (0 < count($items)) {
 
-        // 商品一覧表示
-        $output .= showItems($params, $items);
+                // ページサイズ値の再適用
+                array_splice($items, $params["pagesize"]);
 
-        // 下部ページナビゲータ表示
-        $output .= $pagelinks;
+                // 商品一覧表示
+                $output .= showItems($params, $items);
+            }
+            break;
 
-    } else {
+        // 標準モード
+        default:
 
-        // 検索結果が 0 件の場合(キーワードが指定されている場合のみ)
-        if (!empty($params["keyword"])) {
+            // 検索フォーム表示
+            $output .= showSearchForm($service, $params);
 
-            // 検索結果が無いメッセージ
-            $output .= "<p>検索条件に該当する商品はありませんでした。</p>";
-        }
+            // 検索結果の存在確認
+            if (0 < count($items)) {
 
-        // 最上位カテゴリ一覧を表示
-        $output .= showRootCategories($service, $params);
+                // ページナビゲータ生成
+                $pagelinks = showPageLinks($service, $params);
+
+                // 上部ページナビゲータ表示
+                $output .= $pagelinks;
+
+                // 商品一覧表示
+                $output .= showItems($params, $items);
+
+                // 下部ページナビゲータ表示
+                $output .= $pagelinks;
+
+            } else {
+
+                // 検索結果が 0 件の場合(キーワードが指定されている場合のみ)
+                if (!empty($params["keyword"])) {
+
+                    // 検索結果が無いメッセージ
+                    $output .= "<p>検索条件に該当する商品はありませんでした。</p>";
+                }
+
+                // 最上位カテゴリ一覧を表示
+                $output .= showRootCategories($service, $params);
+            }
+            break;
     }
 
-    // サービスクレジット表示
-    $output .= showServiceCredits($service);
+    // サービスクレジット表示(出力コンテンツが存在する場合)
+    if (!empty($output)) {
+        $output .= showServiceCredits($service);
+    }
 
     // コンテンツの返却
     return $output;
