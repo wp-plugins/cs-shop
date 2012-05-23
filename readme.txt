@@ -3,19 +3,19 @@ Contributors: cottonspace
 Tags: ad,ads,advertising,affiliate,shortcode,yahoo,amazon
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 0.9.9
+Stable tag: 1.0
 
-You can easily create a product search page from the affiliate services of Japan.
+Easy to create a affiliate products page of affiliate services in Japan.
 
 == Description ==
 
-You can easily create a product search page from the affiliate services of Japan.
+Easy to create a affiliate products page of affiliate services in Japan.
 
-Simply by writing a short code to just one page, shopping malls will be created on your page.
+Simply by writing a short code, a shopping mall will be created on your site.
 
-Unfortunately, this plugin is only available in Japan.
+This plugin is only support affiliate services of Japan.
 
-[Readme page in Japanese.](http://www.csync.net/wp-plugin/cs-shop/cs-shop-readme/)
+[Description in Japanese is here.](http://www.csync.net/wp-plugin/cs-shop/cs-shop-readme/)
 
 == Installation ==
 
@@ -25,9 +25,12 @@ Unfortunately, this plugin is only available in Japan.
 1. Create a new page, Please write a short code `[csshop service="rakuten"]` to that page. (This is the case you select the Rakuten.)
 1. Please visit the page that you created. Categories of the affiliate service that you set should be displayed.
 
-This is the most simple configuration steps. Short code to a variety of attributes can be set. Please show 'Shortcode Example' page.
+This is the most simple configuration steps. Short code to a variety of attributes can be set. Please read 'Shortcode Example' section.
 
 == Changelog ==
+
+= 1.0 =
+* Change from "+sales" to "-sales" the value of the sort attribute.
 
 = 0.9.9 =
 * Add "embed" mode.
@@ -35,28 +38,12 @@ This is the most simple configuration steps. Short code to a variety of attribut
 = 0.9.8 =
 * Add support ValueCommerce.
 
-= 0.9.7.1 =
-* Remove the feature of LinkShare Crossover search and Merchandiser integration.
-
 = 0.9.7 =
 * Add support LinkShare.
 * Remove "action" parameter from shortcode attributes.
 
-= 0.9.6.1 =
-* Remove debugging code.
-
 = 0.9.6 =
 * Add support Yahoo! Shopping API.
-
-= 0.9.5.3 =
-* Fixed control of the authority of the admin menu.
-
-= 0.9.5.2 =
-* Add show Review score, and refine some codes.
-
-= 0.9.5.1 =
-* Add display credit of Rakuten service.
-* If there is no product image to view an alternate image.
 
 = 0.9.5 =
 * Add support Amazon Product Advertising API.
@@ -79,32 +66,20 @@ This is the most simple configuration steps. Short code to a variety of attribut
 
 == Upgrade Notice ==
 
+= 1.0 =
+Change the value of the sort attribute.
+
 = 0.9.9 =
 Add "embed" mode.
 
 = 0.9.8 =
 Support ValueCommerce.
 
-= 0.9.7.1 =
-Remove the feature of LinkShare Crossover search and Merchandiser integration.
-
 = 0.9.7 =
 Support LinkShare.
 
-= 0.9.6.1 =
-Re-release version 0.9.6.
-
 = 0.9.6 =
 Support Yahoo! Shopping.
-
-= 0.9.5.3 =
-Admin menu security update.
-
-= 0.9.5.2 =
-Add show Review score.
-
-= 0.9.5.1 =
-If you use the Rakuten, you must version up.
 
 = 0.9.5 =
 Support Amazon service.
@@ -126,7 +101,7 @@ The first release version.
 
 == Shortcode Example ==
 
-To view the results of a search by specifying the keyword 'foo' automatically.
+Show the products which have the keyword 'foo' automatically.
 
 `[csshop service="rakuten" keyword="foo"]`
 
@@ -138,7 +113,7 @@ To view the results of a search by specifying the keyword 'foo' automatically.
 
 `[csshop service="valuecommerce" keyword="foo"]`
 
-To view the results of a search by specifying the specified category automatically.
+Show the products of specified category automatically.
 
 `[csshop service="rakuten" category="100026"]`
 

@@ -22,7 +22,7 @@ class Yahoo extends ServiceBase
     private $sortTypes = array(
         "+price" => "+price",
         "-price" => "-price",
-        "+sales" => "-sold",
+        "-sales" => "-sold",
         "-reviews" => "-review_count",
         "+reviews" => "+review_count"
     );

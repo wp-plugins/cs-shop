@@ -26,7 +26,7 @@ class Amazon extends ServiceBase
             "sort" => array(
                 "+price" => "price",
                 "-price" => "-price",
-                "+sales" => "salesrank"
+                "-sales" => "salesrank"
             ),
             "search" => array(
                 "keyword" => "Keywords",
@@ -37,7 +37,7 @@ class Amazon extends ServiceBase
             "name" => "カー＆バイク用品",
             "browse" => 2017305051,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "-score" => "reviewrank"
@@ -51,7 +51,7 @@ class Amazon extends ServiceBase
             "name" => "ベビー＆マタニティ",
             "browse" => 344919011,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank"
@@ -78,7 +78,7 @@ class Amazon extends ServiceBase
             "name" => "本(和書)",
             "browse" => 465610,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "pricerank",
                 "-price" => "inverse-pricerank",
                 "-release" => "daterank",
@@ -94,7 +94,7 @@ class Amazon extends ServiceBase
             "name" => "DVD",
             "browse" => 562002,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -110,7 +110,7 @@ class Amazon extends ServiceBase
             "name" => "家電＆カメラ",
             "browse" => 3210991,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -127,7 +127,7 @@ class Amazon extends ServiceBase
             "name" => "洋書",
             "browse" => 52231011,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "pricerank",
                 "-price" => "inverse-pricerank",
                 "-release" => "daterank",
@@ -143,7 +143,7 @@ class Amazon extends ServiceBase
             "name" => "食品＆飲料",
             "browse" => 57240051,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "-score" => "reviewrank"
@@ -157,7 +157,7 @@ class Amazon extends ServiceBase
             "name" => "ヘルス＆ビューティー",
             "browse" => 161669011,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -172,7 +172,7 @@ class Amazon extends ServiceBase
             "name" => "ホビー",
             "browse" => 133321861,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -189,7 +189,7 @@ class Amazon extends ServiceBase
             "name" => "DIY・工具",
             "browse" => 2016930051,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "-score" => "reviewrank"
@@ -203,7 +203,7 @@ class Amazon extends ServiceBase
             "name" => "ジュエリー",
             "browse" => 85896051,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "-score" => "reviewrank"
@@ -217,7 +217,7 @@ class Amazon extends ServiceBase
             "name" => "ホーム＆キッチン",
             "browse" => 3839151,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -234,7 +234,7 @@ class Amazon extends ServiceBase
             "name" => "ミュージック",
             "browse" => 562032,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -250,7 +250,7 @@ class Amazon extends ServiceBase
             "name" => "シューズ＆バッグ",
             "browse" => 2016927051,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "-score" => "reviewrank"
@@ -264,7 +264,7 @@ class Amazon extends ServiceBase
             "name" => "ソフトウェア",
             "browse" => 637630,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -281,7 +281,7 @@ class Amazon extends ServiceBase
             "name" => "スポーツ＆アウトドア",
             "browse" => 14315361,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -298,7 +298,7 @@ class Amazon extends ServiceBase
             "name" => "おもちゃ",
             "browse" => 13299551,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -315,7 +315,7 @@ class Amazon extends ServiceBase
             "name" => "VHS",
             "browse" => 561972,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -331,7 +331,7 @@ class Amazon extends ServiceBase
             "name" => "ビデオ",
             "browse" => 561972,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -347,7 +347,7 @@ class Amazon extends ServiceBase
             "name" => "ゲーム",
             "browse" => 637872,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",
@@ -364,7 +364,7 @@ class Amazon extends ServiceBase
             "name" => "時計",
             "browse" => 331952011,
             "sort" => array(
-                "+sales" => "salesrank",
+                "-sales" => "salesrank",
                 "+price" => "price",
                 "-price" => "-price",
                 "+name" => "titlerank",

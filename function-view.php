@@ -150,7 +150,7 @@ function showSortTypeSelector(&$service, $current)
     $sortTypeNames = array(
         "+price" => "価格が安い順",
         "-price" => "価格が高い順",
-        "+sales" => "売れている順",
+        "-sales" => "売れている順",
         "-reviews" => "レビューが多い順",
         "+reviews" => "レビューが少ない順",
         "-score" => "評価が高い順",
