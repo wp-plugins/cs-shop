@@ -339,7 +339,7 @@ function showPageLinks(&$service, &$params)
     $total = $service->getPageCount();
 
     // 現在ページ位置
-    $current = intval($params["page"]);
+    $current = intval($params["pagenum"]);
 
     // PC・携帯電話の判定
     $output .= "<p>\n";
@@ -352,7 +352,7 @@ function showPageLinks(&$service, &$params)
                 $output .= "<span class=\"current\">$i</span>\n";
             } else {
                 if ($i == 1 || (($current - 3) <= $i && $i <= ($current + 3)) || $i == $total) {
-                    $output .= "<a href=\"$url&page=$i\" class=\"page\">$i</a>\n";
+                    $output .= "<a href=\"$url&pagenum=$i\" class=\"page\">$i</a>\n";
                 } else if ($i == 2 || $i == ($total - 1)) {
                     $output .= "..\n";
                 }
@@ -363,11 +363,11 @@ function showPageLinks(&$service, &$params)
 
         // 携帯電話の場合
         if (1 < $current) {
-            $output = "<a href=\"$url&page=" . ($current - 1) . "\">&laquo;前ページ</a>\n";
+            $output = "<a href=\"$url&pagenum=" . ($current - 1) . "\">&laquo;前ページ</a>\n";
         }
         $output .= "$current\n";
         if ($current < $total) {
-            $output .= "<a href=\"$url&page=" . ($current + 1) . "\">次ページ&raquo;</a>\n";
+            $output .= "<a href=\"$url&pagenum=" . ($current + 1) . "\">次ページ&raquo;</a>\n";
         }
     }
     $output .= "</p>\n";

@@ -477,8 +477,8 @@ class Amazon extends ServiceBase
         $params["ResponseGroup"] = "Medium,OfferSummary,Reviews";
 
         // ページ番号の指定(Amazon のページサイズは10固定)
-        if (!empty($this->requests["page"])) {
-            $params["ItemPage"] = $this->requests["page"];
+        if (!empty($this->requests["pagenum"])) {
+            $params["ItemPage"] = $this->requests["pagenum"];
         }
 
         // SearchIndex 指定有無の判定

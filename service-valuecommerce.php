@@ -89,7 +89,7 @@ class ValueCommerce extends ServiceBase
             $params["ec_code"] = $this->requests["shop"];
         }
         $params["results_per_page"] = $this->requests["pagesize"];
-        $params["page"] = $this->requests["page"];
+        $params["page"] = $this->requests["pagenum"];
         if (!empty($this->requests["sort"]) && array_key_exists($this->requests["sort"], $this->sortTypes)) {
             $sort_array = explode(',', $this->sortTypes[$this->requests["sort"]], 2);
             $params["sort_by"] = $sort_array[0];

@@ -100,7 +100,7 @@ class Yahoo extends ServiceBase
         $params["type"] = "all";
         $params["category_id"] = empty($this->requests["category"]) ? "1" : $this->requests["category"];
         $params["hits"] = $this->requests["pagesize"];
-        $params["offset"] = $this->requests["pagesize"] * ($this->requests["page"] - 1);
+        $params["offset"] = $this->requests["pagesize"] * ($this->requests["pagenum"] - 1);
         if (!empty($this->requests["sort"]) && array_key_exists($this->requests["sort"], $this->sortTypes)) {
             $params["sort"] = $this->sortTypes[$this->requests["sort"]];
         }

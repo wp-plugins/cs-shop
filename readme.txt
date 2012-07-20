@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ad,ads,advertising,affiliate,shortcode,yahoo,amazon
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 1.0
+Stable tag: 1.1
 
 Easy to create a affiliate products page of affiliate services in Japan.
 
@@ -28,6 +28,9 @@ This plugin is only support affiliate services of Japan.
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please read 'Shortcode Example' section.
 
 == Changelog ==
+
+= 1.1 =
+* Change query param "page" to "pagenum".
 
 = 1.0 =
 * Change from "+sales" to "-sales" the value of the sort attribute.
@@ -65,6 +68,9 @@ This is the most simple configuration steps. Short code to a variety of attribut
 * The first release version.
 
 == Upgrade Notice ==
+
+= 1.1 =
+Change the name of page param.
 
 = 1.0 =
 Change the value of the sort attribute.

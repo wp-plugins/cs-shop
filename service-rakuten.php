@@ -104,7 +104,7 @@ class Rakuten extends ServiceBase
         } else {
             $params["sort"] = "standard";
         }
-        $params["page"] = $this->requests["page"];
+        $params["page"] = $this->requests["pagenum"];
         ksort($params);
         return $baseurl . "?" . http_build_query($params);
     }

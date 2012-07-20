@@ -66,7 +66,7 @@ class LinkShare extends ServiceBase
             $params["cat"] = $this->requests["category"];
         }
         $params["max"] = $this->requests["pagesize"];
-        $params["pagenumber"] = $this->requests["page"];
+        $params["pagenumber"] = $this->requests["pagenum"];
         if (!empty($this->requests["sort"]) && array_key_exists($this->requests["sort"], $this->sortTypes)) {
             $sort_array = explode(',', $this->sortTypes[$this->requests["sort"]], 2);
             $params["sort"] = $sort_array[0];
