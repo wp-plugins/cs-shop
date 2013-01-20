@@ -2,7 +2,7 @@
 /**
  * 画面描画用関数ライブラリ
  * User: cottonspace
- * Date: 12/04/13
+ * Date: 13/01/20
  */
 
 /**
@@ -244,6 +244,9 @@ EOT;
 
     // 検索フォームの終了
     $output .= <<< EOT
+<noscript>
+<input type="submit" value="検索" />
+</noscript>
 </form>\n
 </div>
 EOT;
