@@ -2,7 +2,7 @@
 /**
  * アフィリエイトサービス実装クラス(楽天)
  * User: cottonspace
- * Date: 12/04/11
+ * Date: 15/05/30
  */
 
 /**
@@ -52,7 +52,7 @@ class Rakuten extends ServiceBase
 
     /**
      * カテゴリ検索クエリ生成
-     * @link http://webservice.rakuten.co.jp/api/genresearch/
+     * @link https://webservice.rakuten.co.jp/api/ichibagenresearch/
      * @param string $category 対象カテゴリ
      * @return string RESTクエリ文字列
      */
@@ -61,12 +61,11 @@ class Rakuten extends ServiceBase
         if (empty($category)) {
             $category = 0;
         }
-        $baseurl = "http://api.rakuten.co.jp/rws/3.0/rest";
+        $baseurl = "https://app.rakuten.co.jp/services/api/IchibaGenre/Search/20140222";
         $params = array();
-        $params["developerId"] = $this->account["developerId"];
+        $params["applicationId"] = $this->account["developerId"];
         $params["affiliateId"] = $this->account["affiliateId"];
-        $params["operation"] = "GenreSearch";
-        $params["version"] = "2007-04-11";
+        $params["format"] = "xml";
         $params["genrePath"] = 0;
         $params["genreId"] = $category;
         ksort($params);
@@ -75,17 +74,16 @@ class Rakuten extends ServiceBase
 
     /**
      * 商品検索クエリ生成
-     * @link http://webservice.rakuten.co.jp/api/itemsearch/
+     * @link https://webservice.rakuten.co.jp/api/ichibaitemsearch/
      * @return string RESTクエリ文字列
      */
     private function queryItems()
     {
-        $baseurl = "http://api.rakuten.co.jp/rws/3.0/rest";
+        $baseurl = "https://app.rakuten.co.jp/services/api/IchibaItem/Search/20140222";
         $params = array();
-        $params["developerId"] = $this->account["developerId"];
+        $params["applicationId"] = $this->account["developerId"];
         $params["affiliateId"] = $this->account["affiliateId"];
-        $params["operation"] = "ItemSearch";
-        $params["version"] = "2010-09-15";
+        $params["format"] = "xml";
         $params["hits"] = $this->requests["pagesize"];
         $params["availability"] = 1;
         $params["field"] = 1;
@@ -158,12 +156,10 @@ EOF;
 
         // RESTクエリ実行
         $strxml = $this->download($query, $query);
-        $strxml = str_replace("header:Header", "Header", $strxml);
-        $strxml = str_replace("genreSearch:GenreSearch", "GenreSearch", $strxml);
         $objxml = simplexml_load_string($strxml);
         $hash = array();
-        if (isset($objxml->Body->GenreSearch)) {
-            foreach ($objxml->Body->GenreSearch->child as $node) {
+        if (isset($objxml->children)) {
+            foreach ($objxml->children->child as $node) {
                 $hash[(string)$node->genreId] = (string)$node->genreName;
             }
         }
@@ -182,13 +178,11 @@ EOF;
 
         // RESTクエリ実行
         $strxml = $this->download($query, $query);
-        $strxml = str_replace("header:Header", "Header", $strxml);
-        $strxml = str_replace("itemSearch:ItemSearch", "ItemSearch", $strxml);
         $objxml = simplexml_load_string($strxml);
         $hash = array();
-        if (isset($objxml->Body->ItemSearch)) {
-            $this->pages = intval($objxml->Body->ItemSearch->pageCount);
-            foreach ($objxml->Body->ItemSearch->Items->Item as $node) {
+        if (isset($objxml->Items)) {
+            $this->pages = intval($objxml->pageCount);
+            foreach ($objxml->Items->Item as $node) {
                 array_push($hash, array(
                         "name" => (string)$node->itemName,
                         "price" => $this->formatPrice((string)$node->itemPrice, (string)$node->taxFlag, (string)$node->postageFlag),
@@ -196,7 +190,7 @@ EOF;
                         "shop" => (string)$node->shopName,
                         "score" => floatval((string)$node->reviewAverage),
                         "aurl" => (string)$node->affiliateUrl,
-                        "iurl" => empty($this->requests["mobile"]) ? (string)$node->mediumImageUrl : (string)$node->smallImageUrl,
+                        "iurl" => empty($this->requests["mobile"]) ? (string)$node->mediumImageUrls->imageUrl[0] : (string)$node->smallImageUrls->imageUrl[0],
                         "surl" => (string)$node->shopUrl
                     )
                 );

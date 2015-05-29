@@ -3,7 +3,7 @@ Contributors: cottonspace
 Tags: ad,ads,advertising,affiliate,shortcode,yahoo,amazon
 Requires at least: 3.0
 Tested up to: 3.0
-Stable tag: 1.1.1
+Stable tag: 1.2
 
 Easy to create a affiliate products page of affiliate services in Japan.
 
@@ -28,6 +28,9 @@ This plugin is only support affiliate services of Japan.
 This is the most simple configuration steps. Short code to a variety of attributes can be set. Please read 'Shortcode Example' section.
 
 == Changelog ==
+
+= 1.2 =
+* Support Rakuten API 2014-02-22 version.
 
 = 1.1.1 =
 * Display "Search" button, when not support JavaScript.
