@@ -3,7 +3,7 @@
 Plugin Name: CS Shop
 Plugin URI: http://www.csync.net/category/blog/wp-plugin/cs-shop/
 Description: Easy to create a affiliate products page of affiliate services in Japan.
-Version: 1.1.1
+Version: 1.2
 Author: cottonspace
 Author URI: http://www.csync.net/
 License: GPL2
@@ -27,7 +27,7 @@ License: GPL2
 /**
  * プラグインのバージョン
  */
-define('CS_SHOP_VER', '1.1.1');
+define('CS_SHOP_VER', '1.2');
 
 /**
  * プラグインのURLを CS_SHOP_URL 定数に設定(末尾に / は付かない)
