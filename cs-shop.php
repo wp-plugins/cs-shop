@@ -252,5 +252,9 @@ if (is_admin()) {
     add_shortcode("csshop", "csshop_view");
 
     // CSSをヘッダに追加
-    add_action('wp_head', 'csshop_css');
+    function cs_shop_enqueue_scripts() {
+      wp_enqueue_style( 'cs-shop', CS_SHOP_URL . "/cs-shop.css" );
+    }
+
+    add_action( 'wp_enqueue_scripts', 'cs_shop_enqueue_scripts' );
 }
